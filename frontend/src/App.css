@@ -1,0 +1,27 @@
+.landingPageContainer {
+    width: 100vw;
+    height: 100vh;
+    background: url("/background2.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+}
+
+.landingPageContainer nav {
+    padding-inline: 1.2rem;
+    padding-block: 1.6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.landingPageContainer nav h2 {
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+
+.landingPageContainer nav .navList {
+    display: flex;
+    gap: 1.6rem;
+    cursor: pointer;
+}
