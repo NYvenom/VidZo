@@ -7,7 +7,7 @@ export default function LandingPage() {
         <div className="landingPageContainer">
             <nav>
                 <div className="navHeader">
-                    <h2>VidZo</h2>
+                    <img src="/VidZo.png" alt="VidZo" />
                 </div>
                 <div className="navList">
                     <p>Join as Guest</p>
