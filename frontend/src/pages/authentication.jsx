@@ -79,11 +79,17 @@ export default function Authentication() {
                     backgroundPosition: 'center',
                 }}
                 />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                <Grid
+                    size={{ xs: 12, sm: 8, md: 5 }}
+                    component={Paper}
+                    elevation={6}
+                    square
+                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Box
                         sx={{
                             my: 8,
                             mx: 4,
+                            width: '100%',
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
