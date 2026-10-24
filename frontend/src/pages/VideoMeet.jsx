@@ -3,7 +3,7 @@ import { Badge, IconButton, requirePropFactory, TextField } from '@mui/material'
 import { Button } from '@mui/material';
 import { secureHeapUsed } from 'crypto';
 
-
+import styles from "../styles/videoComponent.module.css";
 
 const server_url = "http://localhost:8080";
 
@@ -313,15 +313,28 @@ export default function VideoMeetComponent() {
                     </div>
 
 
-                </div>) : <>
-                    <video ref={localVideoRef} autoPlay muted></video>
+                </div>) : <div className={styles.meetVideoContainer}>
+
+                    <video className='meetUserVideo' ref={localVideoRef} autoPlay muted></video>
 
                     {videos.map((video) => (
                         <div key={video.socketId}>
+                            <h2>{video.socketId}</h2>
 
+                            <video
+                            data-socket={video.socketId}
+                            ref={ref => {
+                                if(ref && video.stream) {
+                                    ref.srcObject = video.stream;
+                                }
+                            }}
+                            autoPlay
+                            >
+
+                            </video>
                         </div>
                     ))}
-                </>
+                </div>
             }
         </div>
     );
