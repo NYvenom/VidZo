@@ -4,6 +4,7 @@ import { Button } from '@mui/material';
 import { secureHeapUsed } from 'crypto';
 
 import styles from "../styles/videoComponent.module.css";
+import Stream from 'stream';
 
 const server_url = "http://localhost:8080";
 
@@ -32,7 +33,7 @@ export default function VideoMeetComponent() {
 
     let[screen, setScreen] = useState();
 
-    let [showModel, setShowModel] = useState();
+    let [showModel, setShowModel] = useState(true);
 
     let [screeenAvailable, setScreeenAvailable] = useState();
 
@@ -308,6 +309,54 @@ export default function VideoMeetComponent() {
         setAudio(!audio);
     }
 
+    let handleScreen= () => {
+        setScreen(!screen);
+    }
+
+    let sendMessage = () => {
+        
+    }
+
+    let getDisplayMediaSuccess = (stream) => {
+        try {
+            window.localStream.getTracks().forEach(track => track.stop())
+        } catch(e) {console.log(e)}
+        window.localStream = stream;
+        localVideoRef.current.srcObject = stream;
+
+        for(let id in connections) {
+            if(id === socketIdRef.current) continue;
+
+            connections[id].addStream(window.localStream)
+            connections[id].createOffer().then((description) => [
+                connections[id].setLocalDescription(description)
+                .then(() => {
+                    socketRef.current.emit("signal", id, JSON.stringify({"sdp": connections[id].localDescription}))
+                })
+                .catch(e => console.log(e))
+            ])
+        }
+
+        
+    }
+
+    let getDisplayMedia = () => {
+        if(screen) {
+            if(navigator.mediaDevices.getDisplayMedia) {
+                navigator.mediaDevices.getDisplayMedia({video: true, audio: true})
+                .then(getDisplayMediaSuccess)
+                .then((stream) => {})
+                .catch((e) => console.log(e))
+            }
+        }
+    }
+
+    useEffect(() => {
+        if(screen !== undefined) {
+            getDisplayMedia();
+        } 
+    }, [screen])
+
     return (
         <div>
             {askForUsername ? (
@@ -328,6 +377,18 @@ export default function VideoMeetComponent() {
 
                 </div>) : <div className={styles.meetVideoContainer}>
 
+                    {showModel ?
+                    <div className={styles.chatRoom}>
+                        <div className={styles.chatContainer}>
+                            <h1>Chat</h1>
+                        
+                            <div className={styles.chattingArea}>
+                                <TextField id="outlined-basic" label="Enter Your Message" variant="outlined" />
+                                <Button variant='contained' onClick={sendMessage}>Send</Button>
+                            </div>
+                        </div>
+                    </div> : <></> }
+
                     <div className={styles.buttonContainer}>
                         <IconButton onClick={handleVideo} style={{color: "white"}}>
                             {(video === true) ? <VideocamIcon /> : <VideocamoffIcon />}
@@ -342,12 +403,12 @@ export default function VideoMeetComponent() {
                         </IconButton>
 
                         {screenAvailable === true ?
-                        <IconButton style={{color: "white"}}>
+                        <IconButton onClick={handleScreen} style={{color: "white"}}>
                             {screen === true ? <ScreenShareIcon /> : <StopScreenShareIcon />}
                         </IconButton> : <></>}
 
                         <Badge badgeContent={newMessages} max={999} color='secondary'>
-                            <IconButton style={{color: "white"}}>
+                            <IconButton onClick={() => setShowModel(!showModel)} style={{color: "white"}}>
                                 <ChatIcon />
                             </IconButton>
                         </Badge>
