@@ -8,7 +8,7 @@ import server from "../environment";
 export const AuthContext = createContext({});
 
 const client = axios.create ({
-    baseURL: "localhost:8080/api//users"
+    baseURL: `${server}/api//users`
 })
 
 export const AuthProvider = ({children}) => {
