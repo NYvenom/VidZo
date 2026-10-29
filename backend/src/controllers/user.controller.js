@@ -1,47 +1,49 @@
-import httpStatus from 'http-status';
-import { User } from '../models/user.model.js';
-import bcrypt, { hash } from 'bcrypt';
+import httpStatus from "http-status";
+import { User } from "../models/user.model.js";
+import bcrypt, { hash } from "bcrypt"
 
-import crypto from 'crypto';
+import crypto from "crypto"
 import { Meeting } from "../models/meeting.model.js";
-
 const login = async (req, res) => {
 
     const { username, password } = req.body;
 
-    if(!username || !password) {
-        return res.status(400).json({ message: "Please Provide" });
+    if (!username || !password) {
+        return res.status(400).json({ message: "Please Provide" })
     }
 
-    try{
+    try {
         const user = await User.findOne({ username });
-        if(!user) {
-            return res.status(httpStatus.NOT_FOUND).json({ message: "User Not Found" });
+        if (!user) {
+            return res.status(httpStatus.NOT_FOUND).json({ message: "User Not Found" })
         }
 
-        let isPasswordCorrect = await bcrypt.compare(password, user.password);
 
-        if(isPasswordCorrect) {
+        let isPasswordCorrect = await bcrypt.compare(password, user.password)
+
+        if (isPasswordCorrect) {
             let token = crypto.randomBytes(20).toString("hex");
 
             user.token = token;
             await user.save();
-            return res.status(httpStatus.OK).json({ token: token });
+            return res.status(httpStatus.OK).json({ token: token })
         } else {
-            return res.status(httpStatus.UNAUTHORIZED).json({message: "Invalid Username or Password"});
+            return res.status(httpStatus.UNAUTHORIZED).json({ message: "Invalid Username or password" })
         }
 
-    } catch(e) {
-        return res.status(500).json({ message: `Something went Wrong ${e}` });
+    } catch (e) {
+        return res.status(500).json({ message: `Something went wrong ${e}` })
     }
 }
 
-const register = async (req, res) => {
-    const {name, username, password} = req.body;
 
-    try{
+const register = async (req, res) => {
+    const { name, username, password } = req.body;
+
+
+    try {
         const existingUser = await User.findOne({ username });
-        if(existingUser) {
+        if (existingUser) {
             return res.status(httpStatus.FOUND).json({ message: "User already exists" });
         }
 
@@ -55,42 +57,45 @@ const register = async (req, res) => {
 
         await newUser.save();
 
-        res.status(httpStatus.CREATED).json({ message: "User Registered Successfully" });
+        res.status(httpStatus.CREATED).json({ message: "User Registered" })
 
-    }catch(e) {
-        res.json({ message: `Something went Wrong ${e}` });
+    } catch (e) {
+        res.json({ message: `Something went wrong ${e}` })
     }
+
 }
 
-const getUserHistory = async (req, res) => {
-    const {token} = req.query;
 
-    try{
-        const user = await User.findOne({token: token})
-        const meetings = await Meeting.find({user_id: user.username})
+const getUserHistory = async (req, res) => {
+    const { token } = req.query;
+
+    try {
+        const user = await User.findOne({ token: token });
+        const meetings = await Meeting.find({ user_id: user.username })
         res.json(meetings)
-    } catch(e) {
-        res.json({message: `Something went Wrong ${e}`})
+    } catch (e) {
+        res.json({ message: `Something went wrong ${e}` })
     }
 }
 
 const addToHistory = async (req, res) => {
-    const {token, meeting_code} = req.body;
+    const { token, meeting_code } = req.body;
 
     try {
-        const user = await User.findOne({token: token})
+        const user = await User.findOne({ token: token });
 
         const newMeeting = new Meeting({
             user_id: user.username,
-            meeting_code: meeting_code
+            meetingCode: meeting_code
         })
 
         await newMeeting.save();
 
-        res.status(httpStatus.CREATED).json({message: "Added Code to History"})
-    } catch(e) {
-        res.json({message: `Something went Wrong ${e}`})
+        res.status(httpStatus.CREATED).json({ message: "Added code to history" })
+    } catch (e) {
+        res.json({ message: `Something went wrong ${e}` })
     }
 }
 
-export { login, register, getUserHistory, addToHistory };
+
+export { login, register, getUserHistory, addToHistory }
