@@ -14,7 +14,10 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { AuthContext } from '../contexts/AuthContext';
 import { Snackbar } from '@mui/material';
-import authBg from '/auth-bg.png';
+
+
+
+// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
@@ -79,17 +82,11 @@ export default function Authentication() {
                     backgroundPosition: 'center',
                 }}
                 />
-                <Grid
-                    size={{ xs: 12, sm: 8, md: 5 }}
-                    component={Paper}
-                    elevation={6}
-                    square
-                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                     <Box
                         sx={{
                             my: 8,
                             mx: 4,
-                            width: '100%',
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
