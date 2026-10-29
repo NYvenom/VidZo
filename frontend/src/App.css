@@ -19,8 +19,9 @@
 /* IMG tag resize */
 
 .navHeader img {
-  font-size: 1.8rem;
-  font-weight: 500;
+  height: 60px;
+  width: auto;
+  display: block;
 }
 
 .landingPageContainer nav .navlist {
