@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { AuthContext } from '../contexts/AuthContext';
 import { Snackbar } from '@mui/material';
+import authBg from '../assets/auth-bg.png';
 
 
 
@@ -77,12 +78,12 @@ export default function Authentication() {
                     backgroundImage: `url(${authBg})`,
                     backgroundRepeat: 'no-repeat',
                     backgroundColor: (t) =>
-                    t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                        t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
                         backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                }}
+                        backgroundPosition: 'center',
+                    }}
                 />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                <Grid size={{ xs: 12, sm: 8, md: 5 }} component={Paper} elevation={6} square>
                     <Box
                         sx={{
                             my: 8,

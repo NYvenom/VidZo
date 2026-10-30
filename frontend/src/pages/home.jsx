@@ -24,7 +24,7 @@ function HomeComponent() {
 
             <div className="navBar">
 
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div className='navIcon' style={{ display: "flex", alignItems: "center" }}>
 
                     <img src="/VidZo.png" alt="VidZo" />
                 </div>
