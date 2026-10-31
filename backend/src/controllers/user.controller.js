@@ -71,10 +71,13 @@ const getUserHistory = async (req, res) => {
 
     try {
         const user = await User.findOne({ token: token });
+        if (!user) {
+            return res.status(httpStatus.NOT_FOUND).json({ message: "User not found" });
+        }
         const meetings = await Meeting.find({ user_id: user.username })
         res.json(meetings)
     } catch (e) {
-        res.json({ message: `Something went wrong ${e}` })
+        res.status(500).json({ message: `Something went wrong ${e}` });
     }
 }
 

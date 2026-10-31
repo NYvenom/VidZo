@@ -1,22 +1,20 @@
 .landingPageContainer {
   width: 100vw;
   height: 100vh;
-  background: url("/public/background.png");
+  background: url("/background2.png");
   background-repeat: no-repeat;
   background-size: cover;
   color: white;
 }
 
 .landingPageContainer nav {
-  padding-inline: 1.2rem;
+  padding-inline: 3rem;
   padding-block: 1.6rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+  padding-top: 3rem;
 }
-
-/* IMG tag resize */
 
 .navHeader img {
   height: 80px;
